@@ -204,7 +204,7 @@ def GetInstances(r, bulk=False):
     @type bulk: bool
     @param bulk: whether to return all information about all instances
 
-    @rtype: list of dict or list of str
+    @rtype: list of dict
     @return: if bulk is True, info about the instances, else a list of instances
     """
 
@@ -212,7 +212,10 @@ def GetInstances(r, bulk=False):
         return r.request("get", "/2/instances", query={"bulk": 1})
     else:
         instances = r.request("get", "/2/instances")
-        return [i["id"] for i in instances]
+        # we have to return the raw dict here because at this point
+        # instances is actually a defered so we can't do any nice formatting
+        # for the people
+        return instances
 
 
 def GetInstance(r, instance):
